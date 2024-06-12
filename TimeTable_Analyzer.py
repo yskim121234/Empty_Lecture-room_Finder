@@ -56,20 +56,22 @@ class TTAnalyzer():
                 if  tuple[3] <= time and time <= tuple[4]: # 현재 시간이 강의 시작 시간과 끝 시간의 사이에 있는 경우
                     return [tuple[1], tuple[3], tuple[4], False] # 강의중으로 판단하여 리턴
                     #return 강의, 시작, 끝
-                else: # 현재 시간이 강의 시간에 포함되지 않는 경우
-                    start = 0
-                    for i in range(time//100): # 이전 시간으로 한 시간 단위로 변경해가며 강의 끝 시간 찾기
-                        if tuple[4] >= time - i*100:
-                            start = tuple[4]
-                            break
-                    end = 0
-                    for i in range((1700 - time)//100): # 다음 시간으로 한 시간 단위로 변경해가며 강의 시작 시간 찾기
-                        if tuple[3] <= time + i*100:
-                            end = tuple[3]
-                            break
-                    return ['비어 있음', start, end, True]
-            else: # 해당 요일에 해당 강의실에 강의가 없는 경우
-                return ['비어 있음', 0, 0, True]
+        
+        for tuple in self.cur.fetchall():
+            if str(tuple[2]).find(weekday) != -1:
+                start = 0
+                for i in range(time//100): # 이전 시간으로 한 시간 단위로 변경해가며 강의 끝 시간 찾기
+                    if tuple[4] >= time - i*100:
+                        start = tuple[4]
+                        break
+                end = 0
+                for i in range((1700 - time)//100): # 다음 시간으로 한 시간 단위로 변경해가며 강의 시작 시간 찾기
+                    if tuple[3] <= time + i*100:
+                        end = tuple[3]
+                        break
+                return ['비어 있음', start, end, True]
+    
+        return ['비어 있음', 0, 0, True]
                 
                 
 
@@ -80,5 +82,5 @@ if __name__ == '__main__':
     tta.Get_All_Room()
 
     print('Get_timetable')
-    timetable = tta.Get_timetable("M610", '월', 1100)
+    timetable = tta.Get_timetable("M618", '수', 14*100 + 13)
     print(timetable)
