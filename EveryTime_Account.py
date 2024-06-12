@@ -1,2 +1,2 @@
-ID = 'yskim121234'
-PASSWORD = 'kk4227170'
+ID = '에브리 타임 아이디'
+PASSWORD = '에브리 타임 비밀번호'
